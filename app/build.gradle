@@ -24,7 +24,7 @@ dependencies {
     implementation 'org.postgresql:postgresql:42.7.7'
 
      implementation 'org.mindrot:jbcrypt:0.4'
-     
+
     // This dependency is used by the application.
     implementation libs.guava
 }
@@ -45,3 +45,12 @@ tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
+
+tasks.register('generatePasswordHash', JavaExec) {
+    group = 'application'
+    description = 'Generate BCrypt password hashes'
+
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'tugasbesarpbo.util.PasswordHashGenerator'
+}
+
