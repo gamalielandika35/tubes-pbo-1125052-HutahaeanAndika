@@ -23,8 +23,6 @@ dependencies {
 
     implementation 'org.postgresql:postgresql:42.7.7'
 
-     implementation 'org.mindrot:jbcrypt:0.4'
-
     // This dependency is used by the application.
     implementation libs.guava
 }

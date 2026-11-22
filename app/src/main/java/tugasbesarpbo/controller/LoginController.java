@@ -1,21 +1,24 @@
+
 package tugasbesarpbo.controller;
 
+import tugasbesarpbo.exception.InvalidLoginException;
+import tugasbesarpbo.model.User;
+import tugasbesarpbo.service.AuthenticationService;
+import tugasbesarpbo.util.SessionManager;
+import tugasbesarpbo.view.DashboardView;
 import tugasbesarpbo.view.LoginView;
-import tugasbesarpbo.Database.databaseConnection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import tugasbesarpbo.util.PasswordUtil;
 
 public class LoginController {
 
     private LoginView view;
+    private AuthenticationService authenticationService;
 
     public LoginController(LoginView view) {
         this.view = view;
+        authenticationService = new AuthenticationService();
 
         view.getLoginButton().addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -35,43 +38,28 @@ public class LoginController {
             return;
         }
 
-        String sql = "SELECT password_hash, role FROM users "
-                + "WHERE username = ? AND is_active = TRUE";
+        try {
+            User user = authenticationService.login(username, password);
 
-        try (Connection connection = databaseConnection.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)) {
+            SessionManager.getInstance().setCurrentUser(user);
 
-            statement.setString(1, username);
+            DashboardView dashboardView = new DashboardView(
+                    user.getFullName(),
+                    user.getRole().toString());
 
-            try (ResultSet result = statement.executeQuery()) {
+            DashboardController dashboardController = new DashboardController(dashboardView);
 
-                if (result.next()) {
+            dashboardController.loadDashboard();
 
-                    String passwordHash = result.getString("password_hash");
+            dashboardView.setVisible(true);
+            view.dispose();
 
-                    String role = result.getString("role");
-
-                    boolean passwordValid = PasswordUtil.checkPassword(password, passwordHash);
-
-                    if (passwordValid) {
-                        view.getStatusLabel().setText(
-                                "Login berhasil! Role: " + role);
-                    } else {
-                        view.getStatusLabel().setText(
-                                "Password salah!");
-                    }
-
-                } else {
-                    view.getStatusLabel().setText(
-                            "Username tidak ditemukan atau akun tidak aktif.");
-                }
-            }
+        } catch (InvalidLoginException e) {
+            view.getStatusLabel().setText(e.getMessage());
 
         } catch (SQLException e) {
-
             view.getStatusLabel().setText(
                     "Terjadi kesalahan saat mengakses database.");
-
             e.printStackTrace();
         }
     }
