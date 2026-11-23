@@ -81,7 +81,6 @@ public class ServiceDetailController {
                     detail.getServiceId(),
                     detail.getDiagnosis(),
                     detail.getRepairAction(),
-                    detail.getLaborcost(),
                     detail.getTechnicianNotes(),
                     detail.getUpdatedAt()
                 };

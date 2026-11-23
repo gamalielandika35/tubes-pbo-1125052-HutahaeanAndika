@@ -1,26 +1,61 @@
+
 package tugasbesarpbo.model;
- import java.math.BigDecimal;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class ServiceDetail {
+
     private long detailId;
     private long serviceId;
     private String diagnosis;
     private String repairAction;
-    private BigDecimal Laborcost;
+    private BigDecimal laborCost;
     private String technicianNotes;
     private LocalDateTime updatedAt;
 
-    public ServiceDetail(long detailId, long serviceId, String diagnosis,
-            String repairAction, BigDecimal Laborcost,
-            String technicianNotes, LocalDateTime updatedAt) {
+    public ServiceDetail(long detailId, long serviceId,
+            String diagnosis, String repairAction,
+            BigDecimal laborCost, String technicianNotes,
+            LocalDateTime updatedAt) {
+
         this.detailId = detailId;
         this.serviceId = serviceId;
         this.diagnosis = diagnosis;
         this.repairAction = repairAction;
-        this.Laborcost = Laborcost;
+        this.laborCost = laborCost;
         this.technicianNotes = technicianNotes;
         this.updatedAt = updatedAt;
+    }
+
+    public static ServiceDetail createDiagnosis(
+            long serviceId, String diagnosis,
+            String technicianNotes) {
+
+        return new ServiceDetail(
+                0,
+                serviceId,
+                diagnosis,
+                null,
+                BigDecimal.ZERO,
+                technicianNotes,
+                LocalDateTime.now()
+        );
+    }
+
+    public static ServiceDetail createRepair(
+            long serviceId, String repairAction,
+            BigDecimal laborCost, String technicianNotes) {
+
+        return new ServiceDetail(
+                0,
+                serviceId,
+                null,
+                repairAction,
+                laborCost,
+                technicianNotes,
+                LocalDateTime.now()
+        );
     }
 
     public long getDetailId() {
@@ -55,12 +90,12 @@ public class ServiceDetail {
         this.repairAction = repairAction;
     }
 
-    public BigDecimal getLaborcost() {
-        return Laborcost;
+    public BigDecimal getLaborCost() {
+        return laborCost;
     }
 
-    public void setLaborcost(BigDecimal Laborcost) {
-        this.Laborcost = Laborcost;
+    public void setLaborCost(BigDecimal laborCost) {
+        this.laborCost = laborCost;
     }
 
     public String getTechnicianNotes() {
@@ -78,6 +113,4 @@ public class ServiceDetail {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
-
-    
 }
