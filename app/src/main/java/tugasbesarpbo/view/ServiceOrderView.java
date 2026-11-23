@@ -37,10 +37,10 @@ public class ServiceOrderView extends JPanel {
         titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
 
         String[] columns = {
-            "Service ID", "Ticket Number", "Customer ID",
-            "Device ID", "Received By", "Technician ID",
-            "Complaint", "Status", "Received At",
-            "Estimated Completion", "Completed At"
+                "Service ID", "Ticket Number", "Customer ID",
+                "Device ID", "Received By", "Technician ID",
+                "Complaint", "Status", "Received At",
+                "Estimated Completion", "Completed At"
         };
 
         tableModel = new DefaultTableModel(columns, 0) {
@@ -52,8 +52,7 @@ public class ServiceOrderView extends JPanel {
 
         serviceOrderTable = new JTable(tableModel);
         serviceOrderTable.setSelectionMode(
-                ListSelectionModel.SINGLE_SELECTION
-        );
+                ListSelectionModel.SINGLE_SELECTION);
 
         JScrollPane scrollPane = new JScrollPane(serviceOrderTable);
 
@@ -71,13 +70,14 @@ public class ServiceOrderView extends JPanel {
         complaintArea.setWrapStyleWord(true);
 
         statusComboBox = new JComboBox<String>(
-                new String[]{
-                    "PENDING",
-                    "IN_PROGRESS",
-                    "COMPLETED",
-                    "CANCELLED"
-                }
-        );
+                new String[] {
+                        "RECEIVED",
+                        "DIAGNOSING",
+                        "WAITING_FOR_PARTS",
+                        "IN_REPAIR",
+                        "COMPLETED",
+                        "CANCELLED"
+                });
 
         addFormRow(formPanel, 0, "Ticket Number", ticketNumberField);
         addFormRow(formPanel, 1, "Customer ID", customerIdField);
@@ -96,8 +96,7 @@ public class ServiceOrderView extends JPanel {
         clearButton = new JButton("Clear");
 
         JPanel buttonPanel = new JPanel(
-                new FlowLayout(FlowLayout.LEFT)
-        );
+                new FlowLayout(FlowLayout.LEFT));
 
         buttonPanel.add(addButton);
         buttonPanel.add(updateButton);

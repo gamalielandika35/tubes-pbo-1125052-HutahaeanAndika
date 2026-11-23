@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import tugasbesarpbo.view.PaymentView;
+import tugasbesarpbo.view.ServiceDetailView;
 
 public class DashboardController {
 
@@ -56,6 +57,7 @@ public class DashboardController {
         addMenu("Device");
         addMenu("Service Order");
         addMenu("Reports");
+        addMenu("Service Details");
     }
 
     private void loadCashierMenu() {
@@ -72,6 +74,7 @@ public class DashboardController {
         addMenu("Service Order");
         addMenu("Diagnosis");
         addMenu("Repair");
+        addMenu("Service Details");
     }
 
     private void addMenu(String menuName) {
@@ -94,6 +97,11 @@ public class DashboardController {
 
             new PaymentController(paymentView);
             dashboardView.addPage(menuName, paymentView);
+        } else if (menuName.equals("Service Detail")) {
+            ServiceDetailView serviceDetailView = new ServiceDetailView();
+            
+            new ServiceDetailController(serviceDetailView);
+            dashboardView.addPage(menuName, serviceDetailView);
         }else {
             JPanel page = new JPanel();
             page.add(new JLabel(menuName + " Page"));
