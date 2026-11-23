@@ -7,6 +7,8 @@ import tugasbesarpbo.util.SessionManager;
 import tugasbesarpbo.view.DashboardView;
 import tugasbesarpbo.view.LoginView;
 import tugasbesarpbo.view.UserManagementView;
+import tugasbesarpbo.view.ServiceOrderView;
+import tugasbesarpbo.controller.ServiceOrderController;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,10 +22,10 @@ public class DashboardController {
 
         dashboardView.getLogoutButton().addActionListener(
                 new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                logout();
-            }
-        });
+                    public void actionPerformed(ActionEvent e) {
+                        logout();
+                    }
+                });
     }
 
     public void loadDashboard() {
@@ -76,12 +78,17 @@ public class DashboardController {
         dashboardView.addMenuButton(menuName);
 
         if (menuName.equals("User Management")) {
-            UserManagementView userManagementView =
-                    new UserManagementView();
+            UserManagementView userManagementView = new UserManagementView();
 
             new UserManagementController(userManagementView);
-
             dashboardView.addPage(menuName, userManagementView);
+
+        } else if (menuName.equals("Service Order")) {
+            ServiceOrderView serviceOrderView = new ServiceOrderView();
+
+            new ServiceOrderController(serviceOrderView);
+            dashboardView.addPage(menuName, serviceOrderView);
+
         } else {
             JPanel page = new JPanel();
             page.add(new JLabel(menuName + " Page"));
@@ -90,8 +97,7 @@ public class DashboardController {
 
         JButton button = (JButton) dashboardView.getMenuPanel()
                 .getComponent(
-                    dashboardView.getMenuPanel().getComponentCount() - 1
-                );
+                        dashboardView.getMenuPanel().getComponentCount() - 1);
 
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
