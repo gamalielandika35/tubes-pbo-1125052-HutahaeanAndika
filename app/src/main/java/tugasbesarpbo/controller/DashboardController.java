@@ -57,7 +57,7 @@ public class DashboardController {
         addMenu("Device");
         addMenu("Service Order");
         addMenu("Reports");
-        addMenu("Service Details");
+        addMenu("Service Detail");
     }
 
     private void loadCashierMenu() {
@@ -74,7 +74,7 @@ public class DashboardController {
         addMenu("Service Order");
         addMenu("Diagnosis");
         addMenu("Repair");
-        addMenu("Service Details");
+        addMenu("Service Detail");
     }
 
     private void addMenu(String menuName) {
