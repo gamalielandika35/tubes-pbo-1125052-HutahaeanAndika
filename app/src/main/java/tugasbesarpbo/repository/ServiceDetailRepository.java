@@ -28,7 +28,7 @@ public class ServiceDetailRepository
             statement.setLong(1, serviceDetail.getServiceId());
             statement.setString(2, serviceDetail.getDiagnosis());
             statement.setString(3, serviceDetail.getRepairAction());
-            statement.setBigDecimal(4, serviceDetail.getLaborcost());
+            statement.setBigDecimal(4, serviceDetail.getLaborCost());
             statement.setString(5, serviceDetail.getTechnicianNotes());
 
             statement.executeUpdate();
@@ -86,7 +86,7 @@ public class ServiceDetailRepository
             statement.setLong(1, serviceDetail.getServiceId());
             statement.setString(2, serviceDetail.getDiagnosis());
             statement.setString(3, serviceDetail.getRepairAction());
-            statement.setBigDecimal(4, serviceDetail.getLaborcost());
+            statement.setBigDecimal(4, serviceDetail.getLaborCost());
             statement.setString(5, serviceDetail.getTechnicianNotes());
             statement.setLong(6, serviceDetail.getDetailId());
 

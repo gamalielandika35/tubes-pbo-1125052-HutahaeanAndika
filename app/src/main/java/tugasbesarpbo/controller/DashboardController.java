@@ -12,7 +12,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import tugasbesarpbo.view.PaymentView;
-import tugasbesarpbo.view.ServiceDetailView;
 import tugasbesarpbo.view.ServiceTaskView;
 
 public class DashboardController {
@@ -99,11 +98,6 @@ public class DashboardController {
 
             new PaymentController(paymentView);
             dashboardView.addPage(menuName, paymentView);
-        } else if (menuName.equals("Service Detail")) {
-            ServiceDetailView serviceDetailView = new ServiceDetailView();
-            
-            new ServiceDetailController(serviceDetailView);
-            dashboardView.addPage(menuName, serviceDetailView);
         } else if (menuName.equals("Service Task")) {
             ServiceTaskView serviceTaskView = new ServiceTaskView();
 

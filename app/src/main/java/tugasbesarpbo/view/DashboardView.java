@@ -25,13 +25,11 @@ public class DashboardView extends JFrame {
         setLayout(new BorderLayout());
 
         welcomeLabel = new JLabel(
-                "Welcome, " + fullName + " (" + role + ")"
-        );
+                "Welcome, " + fullName + " (" + role + ")");
 
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 20));
         welcomeLabel.setBorder(
-                BorderFactory.createEmptyBorder(15, 15, 15, 15)
-        );
+                BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
         logoutButton = new JButton("Logout");
 
@@ -97,8 +95,8 @@ public class DashboardView extends JFrame {
 
         if (currentRole.equals("TECHNICIAN")) {
             return pageName.equals("Service Order")
-                    || pageName.equals("Diagnosis")
-                    || pageName.equals("Repair");
+                    || pageName.equals("Service Detail")
+                    || pageName.equals("Service Task");
         }
 
         return false;

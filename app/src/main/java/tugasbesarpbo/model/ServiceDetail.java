@@ -1,4 +1,3 @@
-
 package tugasbesarpbo.model;
 
 import java.math.BigDecimal;
@@ -29,8 +28,7 @@ public class ServiceDetail {
     }
 
     public static ServiceDetail createDiagnosis(
-            long serviceId, String diagnosis,
-            String technicianNotes) {
+            long serviceId, String diagnosis) {
 
         return new ServiceDetail(
                 0,
@@ -38,14 +36,16 @@ public class ServiceDetail {
                 diagnosis,
                 null,
                 BigDecimal.ZERO,
-                technicianNotes,
+                null,
                 LocalDateTime.now()
         );
     }
 
     public static ServiceDetail createRepair(
-            long serviceId, String repairAction,
-            BigDecimal laborCost, String technicianNotes) {
+            long serviceId,
+            String repairAction,
+            BigDecimal laborCost,
+            String technicianNotes) {
 
         return new ServiceDetail(
                 0,

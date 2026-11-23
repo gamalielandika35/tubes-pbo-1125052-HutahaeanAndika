@@ -63,10 +63,12 @@ public class ServiceTaskController {
         view.getDiagnosisArea().setEnabled(isDiagnosis);
         view.getRepairActionArea().setEnabled(!isDiagnosis);
         view.getLaborCostField().setEnabled(!isDiagnosis);
+        view.getTechnicianNotesArea().setEnabled(!isDiagnosis);
 
         if (isDiagnosis) {
             view.getRepairActionArea().setText("");
             view.getLaborCostField().setText("");
+            view.getTechnicianNotesArea().setText("");
         } else {
             view.getDiagnosisArea().setText("");
         }
@@ -83,11 +85,15 @@ public class ServiceTaskController {
                     view.getTechnicianIdField().getText().trim()
             );
 
+            if (serviceId <= 0 || technicianId <= 0) {
+                view.getStatusLabel().setText(
+                        "Service ID dan Technician ID harus lebih dari 0."
+                );
+                return;
+            }
+
             String taskType = view.getTaskTypeComboBox()
                     .getSelectedItem().toString();
-
-            String technicianNotes = view.getTechnicianNotesArea()
-                    .getText().trim();
 
             ServiceTask task;
 
@@ -107,13 +113,18 @@ public class ServiceTaskController {
                         serviceId,
                         technicianId,
                         LocalDateTime.now(),
-                        diagnosis,
-                        technicianNotes
+                        diagnosis
                 );
 
             } else {
 
                 String repairAction = view.getRepairActionArea()
+                        .getText().trim();
+
+                String laborCostText = view.getLaborCostField()
+                        .getText().trim();
+
+                String technicianNotes = view.getTechnicianNotesArea()
                         .getText().trim();
 
                 if (repairAction.isEmpty()) {
@@ -123,9 +134,14 @@ public class ServiceTaskController {
                     return;
                 }
 
-                BigDecimal laborCost = new BigDecimal(
-                        view.getLaborCostField().getText().trim()
-                );
+                if (laborCostText.isEmpty()) {
+                    view.getStatusLabel().setText(
+                            "Labor Cost tidak boleh kosong."
+                    );
+                    return;
+                }
+
+                BigDecimal laborCost = new BigDecimal(laborCostText);
 
                 if (laborCost.compareTo(BigDecimal.ZERO) < 0) {
                     view.getStatusLabel().setText(
@@ -157,8 +173,9 @@ public class ServiceTaskController {
 
         } catch (NumberFormatException e) {
             view.getStatusLabel().setText(
-                    "Service ID, Technician ID, dan Labor Cost harus valid."
+                    "Service ID, Technician ID, dan Labor Cost harus berupa angka."
             );
+
         } catch (SQLException e) {
             view.getStatusLabel().setText(
                     "Gagal menyimpan task: " + e.getMessage()

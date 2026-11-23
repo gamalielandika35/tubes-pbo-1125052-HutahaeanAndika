@@ -1,4 +1,3 @@
-
 package tugasbesarpbo.model;
 
 import java.math.BigDecimal;
@@ -23,8 +22,6 @@ public class RepairTask extends ServiceTask {
     @Override
     public ServiceDetail executeTask() {
 
-        System.out.println("Executing repair task: " + repairAction);
-
         return ServiceDetail.createRepair(
                 getServiceId(),
                 repairAction,
@@ -47,5 +44,13 @@ public class RepairTask extends ServiceTask {
 
     public void setLaborCost(BigDecimal laborCost) {
         this.laborCost = laborCost;
+    }
+
+    public String getTechnicianNotes() {
+        return technicianNotes;
+    }
+
+    public void setTechnicianNotes(String technicianNotes) {
+        this.technicianNotes = technicianNotes;
     }
 }
