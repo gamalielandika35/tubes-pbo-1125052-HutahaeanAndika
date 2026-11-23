@@ -57,14 +57,14 @@ public class ServiceOrderView extends JPanel {
 
         JScrollPane scrollPane = new JScrollPane(serviceOrderTable);
 
-        JPanel formPanel = new JPanel(new GridLayout(0, 2, 10, 8));
+        JPanel formPanel = new JPanel(new GridBagLayout());
 
-        ticketNumberField = new JTextField();
-        customerIdField = new JTextField();
-        deviceIdField = new JTextField();
-        receivedByField = new JTextField();
-        technicianIdField = new JTextField();
-        estimatedCompletionField = new JTextField();
+        ticketNumberField = new JTextField(20);
+        customerIdField = new JTextField(20);
+        deviceIdField = new JTextField(20);
+        receivedByField = new JTextField(20);
+        technicianIdField = new JTextField(20);
+        estimatedCompletionField = new JTextField(20);
 
         complaintArea = new JTextArea(3, 20);
         complaintArea.setLineWrap(true);
@@ -79,29 +79,16 @@ public class ServiceOrderView extends JPanel {
                 }
         );
 
-        formPanel.add(new JLabel("Ticket Number"));
-        formPanel.add(ticketNumberField);
-
-        formPanel.add(new JLabel("Customer ID"));
-        formPanel.add(customerIdField);
-
-        formPanel.add(new JLabel("Device ID"));
-        formPanel.add(deviceIdField);
-
-        formPanel.add(new JLabel("Received By"));
-        formPanel.add(receivedByField);
-
-        formPanel.add(new JLabel("Technician ID"));
-        formPanel.add(technicianIdField);
-
-        formPanel.add(new JLabel("Complaint"));
-        formPanel.add(new JScrollPane(complaintArea));
-
-        formPanel.add(new JLabel("Status"));
-        formPanel.add(statusComboBox);
-
-        formPanel.add(new JLabel("Estimated Completion (yyyy-MM-dd)"));
-        formPanel.add(estimatedCompletionField);
+        addFormRow(formPanel, 0, "Ticket Number", ticketNumberField);
+        addFormRow(formPanel, 1, "Customer ID", customerIdField);
+        addFormRow(formPanel, 2, "Device ID", deviceIdField);
+        addFormRow(formPanel, 3, "Received By", receivedByField);
+        addFormRow(formPanel, 4, "Technician ID", technicianIdField);
+        addFormRow(formPanel, 5, "Complaint",
+                new JScrollPane(complaintArea));
+        addFormRow(formPanel, 6, "Status", statusComboBox);
+        addFormRow(formPanel, 7, "Estimated Completion (yyyy-MM-dd)",
+                estimatedCompletionField);
 
         addButton = new JButton("Add Service Order");
         updateButton = new JButton("Update Service Order");
@@ -119,23 +106,40 @@ public class ServiceOrderView extends JPanel {
 
         statusLabel = new JLabel(" ");
 
-        JPanel bottomPanel = new JPanel(
-                new BorderLayout(10, 10)
-        );
-
+        JPanel bottomPanel = new JPanel(new BorderLayout(10, 10));
         bottomPanel.add(formPanel, BorderLayout.CENTER);
         bottomPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-        JPanel southPanel = new JPanel(
-                new BorderLayout(5, 5)
-        );
-
+        JPanel southPanel = new JPanel(new BorderLayout(5, 5));
         southPanel.add(bottomPanel, BorderLayout.CENTER);
         southPanel.add(statusLabel, BorderLayout.SOUTH);
 
         add(titleLabel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
         add(southPanel, BorderLayout.SOUTH);
+    }
+
+    private void addFormRow(JPanel panel, int row,
+            String labelText, JComponent component) {
+
+        GridBagConstraints constraints = new GridBagConstraints();
+
+        constraints.insets = new Insets(4, 5, 4, 10);
+        constraints.gridy = row;
+        constraints.anchor = GridBagConstraints.WEST;
+
+        constraints.gridx = 0;
+        constraints.weightx = 0;
+        constraints.fill = GridBagConstraints.NONE;
+
+        panel.add(new JLabel(labelText), constraints);
+
+        constraints.gridx = 1;
+        constraints.weightx = 1;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.insets = new Insets(4, 5, 4, 5);
+
+        panel.add(component, constraints);
     }
 
     public JTable getServiceOrderTable() {

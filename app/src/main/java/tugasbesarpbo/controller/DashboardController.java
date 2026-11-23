@@ -8,10 +8,10 @@ import tugasbesarpbo.view.DashboardView;
 import tugasbesarpbo.view.LoginView;
 import tugasbesarpbo.view.UserManagementView;
 import tugasbesarpbo.view.ServiceOrderView;
-import tugasbesarpbo.controller.ServiceOrderController;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import tugasbesarpbo.view.PaymentView;
 
 public class DashboardController {
 
@@ -89,7 +89,12 @@ public class DashboardController {
             new ServiceOrderController(serviceOrderView);
             dashboardView.addPage(menuName, serviceOrderView);
 
-        } else {
+        } else if (menuName.equals("Payment")) {
+            PaymentView paymentView = new PaymentView();
+
+            new PaymentController(paymentView);
+            dashboardView.addPage(menuName, paymentView);
+        }else {
             JPanel page = new JPanel();
             page.add(new JLabel(menuName + " Page"));
             dashboardView.addPage(menuName, page);
