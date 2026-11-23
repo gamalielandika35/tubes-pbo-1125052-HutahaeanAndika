@@ -57,7 +57,6 @@ public class DashboardController {
         addMenu("Device");
         addMenu("Service Order");
         addMenu("Reports");
-        addMenu("Service Detail");
         addMenu("Service Task");
     }
 
@@ -73,7 +72,6 @@ public class DashboardController {
     private void loadTechnicianMenu() {
         addMenu("Dashboard");
         addMenu("Service Order");
-        addMenu("Service Detail");
         addMenu("Service Task");
 
     }
