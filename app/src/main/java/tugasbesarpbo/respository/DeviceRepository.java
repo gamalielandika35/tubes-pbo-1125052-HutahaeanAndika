@@ -9,6 +9,7 @@ import tugasbesarpbo.model.DesktopPC;
 import tugasbesarpbo.model.WashingMachine;
 import tugasbesarpbo.model.Television;
 import tugasbesarpbo.model.Refrigerator;
+import tugasbesarpbo.repository.GenericRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +19,8 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeviceRepository {
+public class DeviceRepository implements GenericRepository<ElectronicDevice> {
+
     private final Connection connection;
 
     public DeviceRepository() {
@@ -29,6 +31,7 @@ public class DeviceRepository {
         }
     }
 
+    @Override
     public void save(ElectronicDevice device) throws SQLException {
         String sql = "INSERT INTO devices (customer_id, device_type, brand, model, serial_number, notes, processor, operating_system, ram_gb, storage_gb, power_rating_watts, rated_voltage, storage_type, battery_model, charger_wattage, charging_port_type, screen_technology, motherboard_form_factor, power_supply_wattage, loading_type, drive_type, screen_size_inches, display_technology, door_configuration, defrost_type, compressor_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -41,10 +44,12 @@ public class DeviceRepository {
             ps.setString(6, device.getDescription());
 
             setDeviceSpecificValues(ps, device);
+
             ps.executeUpdate();
         }
     }
 
+    @Override
     public ElectronicDevice findById(long id) throws SQLException {
         String sql = "SELECT * FROM devices WHERE device_id = ?";
 
@@ -61,6 +66,7 @@ public class DeviceRepository {
         return null;
     }
 
+    @Override
     public List<ElectronicDevice> findAll() throws SQLException {
         List<ElectronicDevice> devices = new ArrayList<>();
 
@@ -81,6 +87,7 @@ public class DeviceRepository {
         return devices;
     }
 
+    @Override
     public void update(ElectronicDevice device) throws SQLException {
         String sql = "UPDATE devices SET customer_id = ?, device_type = ?, brand = ?, model = ?, serial_number = ?, notes = ?, processor = ?, operating_system = ?, ram_gb = ?, storage_gb = ?, power_rating_watts = ?, rated_voltage = ?, storage_type = ?, battery_model = ?, charger_wattage = ?, charging_port_type = ?, screen_technology = ?, motherboard_form_factor = ?, power_supply_wattage = ?, loading_type = ?, drive_type = ?, screen_size_inches = ?, display_technology = ?, door_configuration = ?, defrost_type = ?, compressor_type = ? WHERE device_id = ?";
 
@@ -93,12 +100,14 @@ public class DeviceRepository {
             ps.setString(6, device.getDescription());
 
             setDeviceSpecificValues(ps, device);
+
             ps.setLong(27, device.getDeviceId());
 
             ps.executeUpdate();
         }
     }
 
+    @Override
     public void delete(long id) throws SQLException {
         String sql = "DELETE FROM devices WHERE device_id = ?";
 
@@ -110,6 +119,7 @@ public class DeviceRepository {
 
     private void setDeviceSpecificValues(PreparedStatement ps, ElectronicDevice device) throws SQLException {
         switch (device.getDeviceType()) {
+
             case "LAPTOP":
                 Laptop laptop = (Laptop) device;
 
@@ -266,16 +276,22 @@ public class DeviceRepository {
         switch (rs.getString("device_type")) {
             case "LAPTOP":
                 return mapLaptop(rs);
+
             case "SMARTPHONE":
                 return mapSmartphone(rs);
+
             case "DESKTOP_PC":
                 return mapDesktopPC(rs);
+
             case "WASHING_MACHINE":
                 return mapWashingMachine(rs);
+
             case "TELEVISION":
                 return mapTelevision(rs);
+
             case "REFRIGERATOR":
                 return mapRefrigerator(rs);
+
             default:
                 return null;
         }
