@@ -8,7 +8,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-public class CustomerView extends JFrame {
+public class CustomerView extends JPanel {
     private JTextField txtId, txtName, txtPhone, txtEmail, txtAddress;
     private JButton btnAdd, btnUpdate, btnDelete, btnClear;
     private JTable table;
@@ -22,10 +22,6 @@ public class CustomerView extends JFrame {
     }
 
     private void initComponents() {
-        setTitle("Customer Management");
-        setSize(800, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
 
         JPanel formPanel = new JPanel(new GridLayout(5, 2, 5, 5));
 
@@ -189,11 +185,5 @@ public class CustomerView extends JFrame {
         txtEmail.setText("");
         txtAddress.setText("");
         table.clearSelection();
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new CustomerView().setVisible(true);
-        });
     }
 }

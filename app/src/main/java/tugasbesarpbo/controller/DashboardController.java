@@ -16,6 +16,8 @@ import tugasbesarpbo.view.ServiceTaskView;
 import tugasbesarpbo.model.DashboardStatistics;
 import tugasbesarpbo.service.DashboardService;
 import java.sql.SQLException;
+import tugasbesarpbo.view.CustomerView;
+import tugasbesarpbo.view.DeviceView;
 
 public class DashboardController {
 
@@ -113,6 +115,15 @@ public class DashboardController {
             new UserManagementController(userManagementView);
             dashboardView.addPage(menuName, userManagementView);
 
+        } else if (menuName.equals("Customer")) {
+
+            CustomerView customerView = new CustomerView();
+            dashboardView.addPage(menuName, customerView);
+
+        } else if (menuName.equals("Device")) {
+
+            DeviceView deviceView = new DeviceView();
+            dashboardView.addPage(menuName, deviceView);
         } else if (menuName.equals("Service Order")) {
 
             ServiceOrderView serviceOrderView = new ServiceOrderView();

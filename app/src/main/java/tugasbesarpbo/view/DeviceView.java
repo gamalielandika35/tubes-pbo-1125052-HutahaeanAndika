@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DeviceView extends JFrame {
+public class DeviceView extends JPanel {
 
     private JTextField txtId;
     private JTextField txtCustomerId;
@@ -52,11 +52,6 @@ public class DeviceView extends JFrame {
     }
 
     private void initComponents() {
-
-        setTitle("Device Management");
-        setSize(1100, 700);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
 
         JPanel commonPanel = new JPanel(
                 new GridLayout(0, 4, 8, 8)
