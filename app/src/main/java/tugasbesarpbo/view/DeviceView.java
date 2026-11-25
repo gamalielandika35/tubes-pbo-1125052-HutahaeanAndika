@@ -42,6 +42,8 @@ public class DeviceView extends JPanel {
     private Map<String, JTextField> detailFields;
 
     private DeviceController controller;
+    private JLabel statusLabel;
+    private boolean confirmDelete;
 
     public DeviceView() {
         controller = new DeviceController();
@@ -54,12 +56,10 @@ public class DeviceView extends JPanel {
     private void initComponents() {
 
         JPanel commonPanel = new JPanel(
-                new GridLayout(0, 4, 8, 8)
-        );
+                new GridLayout(0, 4, 8, 8));
 
         commonPanel.setBorder(
-                BorderFactory.createTitledBorder("General Information")
-        );
+                BorderFactory.createTitledBorder("General Information"));
 
         txtId = new JTextField();
         txtId.setEditable(false);
@@ -69,7 +69,7 @@ public class DeviceView extends JPanel {
         txtSerialNumber = new JTextField();
         txtDescription = new JTextField();
 
-        cboDeviceType = new JComboBox<>(new String[]{
+        cboDeviceType = new JComboBox<>(new String[] {
                 "LAPTOP",
                 "SMARTPHONE",
                 "DESKTOP_PC",
@@ -100,12 +100,10 @@ public class DeviceView extends JPanel {
         commonPanel.add(txtDescription);
 
         detailPanel = new JPanel(
-                new GridLayout(0, 2, 8, 8)
-        );
+                new GridLayout(0, 2, 8, 8));
 
         detailPanel.setBorder(
-                BorderFactory.createTitledBorder("Device Specific Information")
-        );
+                BorderFactory.createTitledBorder("Device Specific Information"));
 
         initializeDetailFields();
         showDeviceFields();
@@ -127,8 +125,17 @@ public class DeviceView extends JPanel {
         buttonPanel.add(btnDelete);
         buttonPanel.add(btnClear);
 
+        statusLabel = new JLabel(" ");
+        statusLabel.setForeground(new Color(40, 90, 150));
+        statusLabel.setBorder(
+                BorderFactory.createEmptyBorder(4, 8, 4, 8));
+
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.add(statusLabel, BorderLayout.NORTH);
+        bottomPanel.add(buttonPanel, BorderLayout.SOUTH);
+
         tableModel = new DefaultTableModel(
-                new Object[]{
+                new Object[] {
                         "Device ID",
                         "Customer ID",
                         "Device Type",
@@ -137,8 +144,7 @@ public class DeviceView extends JPanel {
                         "Model",
                         "Serial Number",
                         "Description"
-                }, 0
-        ) {
+                }, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -147,8 +153,7 @@ public class DeviceView extends JPanel {
 
         table = new JTable(tableModel);
         table.setSelectionMode(
-                ListSelectionModel.SINGLE_SELECTION
-        );
+                ListSelectionModel.SINGLE_SELECTION);
 
         table.setAutoCreateRowSorter(true);
 
@@ -159,14 +164,13 @@ public class DeviceView extends JPanel {
 
         JScrollPane formScrollPane = new JScrollPane(formPanel);
         formScrollPane.setPreferredSize(
-                new Dimension(1000, 270)
-        );
+                new Dimension(1000, 270));
 
         setLayout(new BorderLayout(10, 10));
 
         add(formScrollPane, BorderLayout.NORTH);
         add(new JScrollPane(table), BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
+        add(bottomPanel, BorderLayout.SOUTH);
 
         btnAdd.addActionListener(e -> addDevice());
         btnUpdate.addActionListener(e -> updateDevice());
@@ -286,14 +290,12 @@ public class DeviceView extends JPanel {
         if (isUpdate) {
             deviceId = parseLong(
                     txtId.getText(),
-                    "Device ID"
-            );
+                    "Device ID");
         }
 
         long customerId = parseLong(
                 txtCustomerId.getText(),
-                "Customer ID"
-        );
+                "Customer ID");
 
         String brand = txtBrand.getText().trim();
         String model = txtModel.getText().trim();
@@ -302,8 +304,7 @@ public class DeviceView extends JPanel {
 
         if (brand.isEmpty() || model.isEmpty() || serialNumber.isEmpty()) {
             throw new IllegalArgumentException(
-                    "Brand, Model, dan Serial Number wajib diisi."
-            );
+                    "Brand, Model, dan Serial Number wajib diisi.");
         }
 
         String type = cboDeviceType.getSelectedItem().toString();
@@ -324,8 +325,7 @@ public class DeviceView extends JPanel {
                         parseIntField("storageGb", "Storage"),
                         getDetailText("storageType"),
                         getDetailText("batteryModel"),
-                        parseIntField("chargerWattage", "Charger Wattage")
-                );
+                        parseIntField("chargerWattage", "Charger Wattage"));
 
             case "SMARTPHONE":
                 return DeviceFactory.createSmartphone(
@@ -340,8 +340,7 @@ public class DeviceView extends JPanel {
                         parseIntField("ramGb", "RAM"),
                         parseIntField("storageGb", "Storage"),
                         getDetailText("chargingPortType"),
-                        getDetailText("screenTechnology")
-                );
+                        getDetailText("screenTechnology"));
 
             case "DESKTOP_PC":
                 return DeviceFactory.createDekstopPC(
@@ -357,8 +356,7 @@ public class DeviceView extends JPanel {
                         parseIntField("storageGb", "Storage"),
                         getDetailText("storageType"),
                         getDetailText("motherboardFormFactor"),
-                        parseIntField("powerSupplyWattage", "Power Supply Wattage")
-                );
+                        parseIntField("powerSupplyWattage", "Power Supply Wattage"));
 
             case "WASHING_MACHINE":
                 return DeviceFactory.createWashingMachine(
@@ -371,8 +369,7 @@ public class DeviceView extends JPanel {
                         parseIntField("powerRatingWatts", "Power Rating"),
                         parseIntField("ratedVoltage", "Rated Voltage"),
                         getDetailText("loadingType"),
-                        getDetailText("driveType")
-                );
+                        getDetailText("driveType"));
 
             case "TELEVISION":
                 return DeviceFactory.createTelevision(
@@ -385,8 +382,7 @@ public class DeviceView extends JPanel {
                         parseIntField("powerRatingWatts", "Power Rating"),
                         parseIntField("ratedVoltage", "Rated Voltage"),
                         parseNullableDouble("screenSizeInches", "Screen Size"),
-                        getDetailText("displayTechnology")
-                );
+                        getDetailText("displayTechnology"));
 
             case "REFRIGERATOR":
                 return DeviceFactory.createRefrigerator(
@@ -400,133 +396,92 @@ public class DeviceView extends JPanel {
                         parseIntField("ratedVoltage", "Rated Voltage"),
                         getDetailText("doorConfiguration"),
                         getDetailText("defrostType"),
-                        getDetailText("compressorType")
-                );
+                        getDetailText("compressorType"));
 
             default:
                 throw new IllegalArgumentException(
-                        "Jenis device tidak valid."
-                );
+                        "Jenis device tidak valid.");
         }
     }
 
     private void addDevice() {
-
         try {
-
             ElectronicDevice device = buildDevice(false);
             controller.addDevice(device);
 
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Device berhasil ditambahkan."
-            );
-
+            showStatus("Device berhasil ditambahkan.", false);
             clearForm();
             loadDevices();
 
         } catch (Exception e) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    e.getMessage(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE
-            );
+            showStatus(e.getMessage(), true);
         }
     }
 
     private void updateDevice() {
-
         try {
-
             if (txtId.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Pilih device terlebih dahulu."
-                );
+                showStatus("Pilih device terlebih dahulu.", true);
                 return;
             }
 
             ElectronicDevice device = buildDevice(true);
             controller.updateDevice(device);
 
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Device berhasil diupdate."
-            );
-
+            showStatus("Device berhasil diupdate.", false);
             clearForm();
             loadDevices();
 
         } catch (Exception e) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    e.getMessage(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE
-            );
+            showStatus(e.getMessage(), true);
         }
     }
 
     private void deleteDevice() {
-
         try {
-
             if (txtId.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Pilih device terlebih dahulu."
-                );
+                showStatus("Pilih device terlebih dahulu.", true);
                 return;
             }
 
-            int confirm = JOptionPane.showConfirmDialog(
-                    this,
-                    "Yakin ingin menghapus device ini?",
-                    "Konfirmasi Hapus",
-                    JOptionPane.YES_NO_OPTION
-            );
+            if (!confirmDelete) {
+                confirmDelete = true;
+                btnDelete.setText("Ya, Hapus");
 
-            if (confirm != JOptionPane.YES_OPTION) {
+                showStatus(
+                        "Klik 'Ya, Hapus' sekali lagi untuk menghapus. Klik Clear untuk batal.",
+                        true);
+
                 return;
             }
 
             long id = Long.parseLong(txtId.getText());
             controller.deleteDevice(id);
 
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Device berhasil dihapus."
-            );
+            confirmDelete = false;
+            btnDelete.setText("Hapus");
+
+            showStatus("Device berhasil dihapus.", false);
 
             clearForm();
             loadDevices();
 
         } catch (Exception e) {
+            confirmDelete = false;
+            btnDelete.setText("Hapus");
 
-            JOptionPane.showMessageDialog(
-                    this,
-                    e.getMessage(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE
-            );
+            showStatus(e.getMessage(), true);
         }
     }
 
     private void loadDevices() {
-
         try {
-
             tableModel.setRowCount(0);
 
-            List<ElectronicDevice> devices =
-                    controller.getAllDevices();
+            List<ElectronicDevice> devices = controller.getAllDevices();
 
             for (ElectronicDevice device : devices) {
-
-                tableModel.addRow(new Object[]{
+                tableModel.addRow(new Object[] {
                         device.getDeviceId(),
                         device.getCustomerId(),
                         device.getDeviceType(),
@@ -539,17 +494,13 @@ public class DeviceView extends JPanel {
             }
 
         } catch (Exception e) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    e.getMessage(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE
-            );
+            showStatus(e.getMessage(), true);
         }
     }
 
     private void selectDevice() {
+        confirmDelete = false;
+        btnDelete.setText("Hapus");
 
         int selectedRow = table.getSelectedRow();
 
@@ -562,16 +513,14 @@ public class DeviceView extends JPanel {
             int modelRow = table.convertRowIndexToModel(selectedRow);
 
             long id = Long.parseLong(
-                    tableModel.getValueAt(modelRow, 0).toString()
-            );
+                    tableModel.getValueAt(modelRow, 0).toString());
 
             ElectronicDevice device = controller.getDeviceById(id);
 
             if (device == null) {
                 JOptionPane.showMessageDialog(
                         this,
-                        "Device tidak ditemukan."
-                );
+                        "Device tidak ditemukan.");
                 return;
             }
 
@@ -593,8 +542,7 @@ public class DeviceView extends JPanel {
                     this,
                     e.getMessage(),
                     "Error",
-                    JOptionPane.ERROR_MESSAGE
-            );
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -686,6 +634,8 @@ public class DeviceView extends JPanel {
     }
 
     private void clearForm() {
+        confirmDelete = false;
+        btnDelete.setText("Hapus");
 
         txtId.setText("");
         txtCustomerId.setText("");
@@ -728,9 +678,16 @@ public class DeviceView extends JPanel {
         } catch (NumberFormatException e) {
 
             throw new IllegalArgumentException(
-                    label + " harus berupa angka."
-            );
+                    label + " harus berupa angka.");
         }
+    }
+
+    private void showStatus(String message, boolean isError) {
+        statusLabel.setText(
+                message == null ? "Terjadi kesalahan." : message);
+
+        statusLabel.setForeground(
+                isError ? Color.RED : new Color(0, 128, 0));
     }
 
     private int parseIntField(String key, String label) {
@@ -739,8 +696,7 @@ public class DeviceView extends JPanel {
 
         if (value.isEmpty()) {
             throw new IllegalArgumentException(
-                    label + " wajib diisi."
-            );
+                    label + " wajib diisi.");
         }
 
         try {
@@ -749,8 +705,7 @@ public class DeviceView extends JPanel {
         } catch (NumberFormatException e) {
 
             throw new IllegalArgumentException(
-                    label + " harus berupa bilangan bulat."
-            );
+                    label + " harus berupa bilangan bulat.");
         }
     }
 
@@ -768,8 +723,7 @@ public class DeviceView extends JPanel {
         } catch (NumberFormatException e) {
 
             throw new IllegalArgumentException(
-                    label + " harus berupa angka."
-            );
+                    label + " harus berupa angka.");
         }
     }
 

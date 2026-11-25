@@ -1,6 +1,6 @@
 
 package tugasbesarpbo.view;
-
+import tugasbesarpbo.service.ServiceOrderService;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -11,6 +11,8 @@ public class ServiceTaskView extends JPanel {
     private JTextField serviceIdField;
     private JTextField technicianIdField;
     private JTextField laborCostField;
+    private JButton completeButton;
+    private ServiceOrderService serviceOrderService;
 
     private JTextArea diagnosisArea;
     private JTextArea repairActionArea;
@@ -28,14 +30,15 @@ public class ServiceTaskView extends JPanel {
 
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        
 
         JLabel titleLabel = new JLabel("Service Task Management");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
 
         String[] columns = {
-            "Detail ID", "Service ID", "Diagnosis",
-            "Repair Action", "Estimated Cost",
-            "Technician Notes", "Updated At"
+                "Detail ID", "Service ID", "Diagnosis",
+                "Repair Action", "Estimated Cost",
+                "Technician Notes", "Updated At"
         };
 
         tableModel = new DefaultTableModel(columns, 0) {
@@ -51,8 +54,7 @@ public class ServiceTaskView extends JPanel {
         JPanel formPanel = new JPanel(new GridBagLayout());
 
         taskTypeComboBox = new JComboBox<>(
-                new String[]{"DIAGNOSIS", "REPAIR"}
-        );
+                new String[] { "DIAGNOSIS", "REPAIR" });
 
         serviceIdField = new JTextField(20);
         technicianIdField = new JTextField(20);
@@ -83,12 +85,13 @@ public class ServiceTaskView extends JPanel {
 
         executeButton = new JButton("Execute Task");
         clearButton = new JButton("Clear");
+        completeButton = new JButton("Complete Service");
 
         JPanel buttonPanel = new JPanel(
-                new FlowLayout(FlowLayout.LEFT)
-        );
+                new FlowLayout(FlowLayout.LEFT));
 
         buttonPanel.add(executeButton);
+        buttonPanel.add(completeButton);
         buttonPanel.add(clearButton);
 
         statusLabel = new JLabel(" ");
@@ -176,4 +179,7 @@ public class ServiceTaskView extends JPanel {
     public JLabel getStatusLabel() {
         return statusLabel;
     }
+    public JButton getCompleteButton() {
+    return completeButton;
+}
 }

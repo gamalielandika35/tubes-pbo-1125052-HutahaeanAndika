@@ -14,6 +14,7 @@ public class CustomerView extends JPanel {
     private JTable table;
     private DefaultTableModel tableModel;
     private CustomerController controller;
+    private JLabel statusLabel;
 
     public CustomerView() {
         controller = new CustomerController();
@@ -22,7 +23,6 @@ public class CustomerView extends JPanel {
     }
 
     private void initComponents() {
-
         JPanel formPanel = new JPanel(new GridLayout(5, 2, 5, 5));
 
         txtId = new JTextField();
@@ -54,15 +54,26 @@ public class CustomerView extends JPanel {
         buttonPanel.add(btnDelete);
         buttonPanel.add(btnClear);
 
+        statusLabel = new JLabel(" ");
+        statusLabel.setForeground(new Color(40, 90, 150));
+        statusLabel.setBorder(
+                BorderFactory.createEmptyBorder(4, 8, 4, 8)
+        );
+
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.add(statusLabel, BorderLayout.NORTH);
+        bottomPanel.add(buttonPanel, BorderLayout.SOUTH);
+
         tableModel = new DefaultTableModel(
                 new Object[]{"ID", "Name", "Phone", "Email", "Address"}, 0
         );
+
         table = new JTable(tableModel);
 
         setLayout(new BorderLayout(10, 10));
         add(formPanel, BorderLayout.NORTH);
         add(new JScrollPane(table), BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
+        add(bottomPanel, BorderLayout.SOUTH);
 
         btnAdd.addActionListener(e -> addCustomer());
         btnUpdate.addActionListener(e -> updateCustomer());
@@ -76,31 +87,34 @@ public class CustomerView extends JPanel {
         });
     }
 
-   private void addCustomer() {
+    private void addCustomer() {
         try {
             String name = txtName.getText().trim();
             String phone = txtPhone.getText().trim();
             String email = txtEmail.getText().trim();
             String address = txtAddress.getText().trim();
 
-            if (name.isEmpty() || phone.isEmpty() || email.isEmpty() || address.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Semua data harus diisi.");
+            if (name.isEmpty() || phone.isEmpty()
+                    || email.isEmpty() || address.isEmpty()) {
+                showStatus("Semua data harus diisi.", true);
                 return;
             }
 
             controller.addCustomer(name, phone, email, address);
-            JOptionPane.showMessageDialog(this, "Customer berhasil ditambahkan.");
+
+            showStatus("Customer berhasil ditambahkan.", false);
             clearForm();
             loadCustomers();
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
+            showStatus(e.getMessage(), true);
         }
     }
 
     private void updateCustomer() {
         try {
             if (txtId.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Pilih customer terlebih dahulu.");
+                showStatus("Pilih customer terlebih dahulu.", true);
                 return;
             }
 
@@ -109,8 +123,9 @@ public class CustomerView extends JPanel {
             String email = txtEmail.getText().trim();
             String address = txtAddress.getText().trim();
 
-            if (name.isEmpty() || phone.isEmpty() || email.isEmpty() || address.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Semua data harus diisi.");
+            if (name.isEmpty() || phone.isEmpty()
+                    || email.isEmpty() || address.isEmpty()) {
+                showStatus("Semua data harus diisi.", true);
                 return;
             }
 
@@ -122,27 +137,32 @@ public class CustomerView extends JPanel {
                     address
             );
 
-            JOptionPane.showMessageDialog(this, "Customer berhasil diupdate.");
+            showStatus("Customer berhasil diupdate.", false);
             clearForm();
             loadCustomers();
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
+            showStatus(e.getMessage(), true);
         }
     }
 
     private void deleteCustomer() {
         try {
             if (txtId.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Pilih customer terlebih dahulu.");
+                showStatus("Pilih customer terlebih dahulu.", true);
                 return;
             }
 
-            controller.deleteCustomer(Long.parseLong(txtId.getText()));
-            JOptionPane.showMessageDialog(this, "Customer berhasil dihapus.");
+            controller.deleteCustomer(
+                    Long.parseLong(txtId.getText())
+            );
+
+            showStatus("Customer berhasil dihapus.", false);
             clearForm();
             loadCustomers();
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
+            showStatus(e.getMessage(), true);
         }
     }
 
@@ -173,8 +193,9 @@ public class CustomerView extends JPanel {
                         customer.getAddress()
                 });
             }
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
+            showStatus(e.getMessage(), true);
         }
     }
 
@@ -185,5 +206,15 @@ public class CustomerView extends JPanel {
         txtEmail.setText("");
         txtAddress.setText("");
         table.clearSelection();
+    }
+
+    private void showStatus(String message, boolean isError) {
+        statusLabel.setText(
+                message == null ? "Terjadi kesalahan." : message
+        );
+
+        statusLabel.setForeground(
+                isError ? Color.RED : new Color(0, 128, 0)
+        );
     }
 }
