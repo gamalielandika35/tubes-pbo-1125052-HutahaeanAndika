@@ -160,9 +160,9 @@ public class ServiceTaskController {
                 );
             }
 
-            // ServiceDetail detail = task.executeTask();
+            ServiceDetail detail = task.executeTask();
 
-            // service.addServiceDetail(detail);
+            service.addServiceDetail(detail);
 
             view.getStatusLabel().setText(
                     taskType + " task berhasil disimpan."
@@ -177,11 +177,11 @@ public class ServiceTaskController {
             );
         }
 
-        // } catch (SQLException e) {
-        //     view.getStatusLabel().setText(
-        //             "Gagal menyimpan task: " + e.getMessage()
-        //     );
-        // }
+         catch (SQLException e) {
+            view.getStatusLabel().setText(
+                    "Gagal menyimpan task: " + e.getMessage()
+            );
+        }
     }
 
     private void loadServiceDetails() {
