@@ -1,10 +1,11 @@
-
 package tugasbesarpbo.controller;
 
 import tugasbesarpbo.model.ServiceOrder;
 import tugasbesarpbo.model.Status;
 import tugasbesarpbo.service.ServiceOrderService;
 import tugasbesarpbo.view.ServiceOrderView;
+import tugasbesarpbo.exception.InvalidServiceOrderException;
+import tugasbesarpbo.exception.ServiceOrderNotFoundException;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -139,10 +140,14 @@ public class ServiceOrderController {
             clearForm();
             loadServiceOrders();
 
+        } catch (InvalidServiceOrderException e) {
+            view.getStatusLabel().setText(e.getMessage());
+
         } catch (IllegalArgumentException e) {
             view.getStatusLabel().setText(
                     "Periksa kembali input angka, tanggal, dan status."
             );
+
         } catch (SQLException e) {
             view.getStatusLabel().setText(
                     "Gagal menambahkan data: " + e.getMessage()
@@ -169,13 +174,6 @@ public class ServiceOrderController {
 
             ServiceOrder oldServiceOrder =
                     serviceOrderService.getServiceOrderById(serviceId);
-
-            if (oldServiceOrder == null) {
-                view.getStatusLabel().setText(
-                        "Data service order tidak ditemukan."
-                );
-                return;
-            }
 
             String technicianText =
                     view.getTechnicianIdField().getText().trim();
@@ -217,10 +215,17 @@ public class ServiceOrderController {
             clearForm();
             loadServiceOrders();
 
+        } catch (ServiceOrderNotFoundException e) {
+            view.getStatusLabel().setText(e.getMessage());
+
+        } catch (InvalidServiceOrderException e) {
+            view.getStatusLabel().setText(e.getMessage());
+
         } catch (IllegalArgumentException e) {
             view.getStatusLabel().setText(
                     "Periksa kembali input angka, tanggal, dan status."
             );
+
         } catch (SQLException e) {
             view.getStatusLabel().setText(
                     "Gagal memperbarui data: " + e.getMessage()
@@ -253,6 +258,12 @@ public class ServiceOrderController {
 
             clearForm();
             loadServiceOrders();
+
+        } catch (ServiceOrderNotFoundException e) {
+            view.getStatusLabel().setText(e.getMessage());
+
+        } catch (InvalidServiceOrderException e) {
+            view.getStatusLabel().setText(e.getMessage());
 
         } catch (SQLException e) {
             view.getStatusLabel().setText(
