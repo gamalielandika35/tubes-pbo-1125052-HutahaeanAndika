@@ -1,8 +1,7 @@
 package tugasbesarpbo.model;
-import java.util.Arrays;
-import java.util.List;
 
-public class WashingMachine extends HouseholdDevice implements Diagnosable, Repairable {
+
+public class WashingMachine extends HouseholdDevice {
     private String loadingType;
     private String driveType;
 
@@ -31,14 +30,5 @@ public class WashingMachine extends HouseholdDevice implements Diagnosable, Repa
     @Override 
     public String getDeviceType(){
         return "WASHING_MACHINE";
-    }
-    @Override
-    public List<String> getDiagnosticChecklist() {
-        return Arrays.asList("Water Inlet", "Drain System", "Drum Rotation", "Motor", "Noise dan Vibration", "Control Panel");
-    }
-
-    @Override
-    public List<String> getCommonRepairComponents() {
-        return Arrays.asList("Water Inlet Valve", "Drain Pump", "Drive Belt", "Motor", "Suspension", "Control Board");
     }
 }

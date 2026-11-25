@@ -1,9 +1,7 @@
 package tugasbesarpbo.model;
 
-import java.util.Arrays;
-import java.util.List;
 
-public class Television extends HouseholdDevice implements Diagnosable, Repairable {
+public class Television extends HouseholdDevice {
     private Double screenSizeInches;
     private String displayTechnology;
 
@@ -32,14 +30,5 @@ public class Television extends HouseholdDevice implements Diagnosable, Repairab
     @Override 
     public String getDeviceType(){
         return "TELEVISION";
-    }
-    @Override
-    public List<String> getDiagnosticChecklist() {
-        return Arrays.asList("Power Supply", "Display dan Backlight", "Audio", "HDMI dan Input Port", "Remote Control");
-    }
-
-    @Override
-    public List<String> getCommonRepairComponents() {
-        return Arrays.asList("Power Supply Board", "Main Board", "LED Backlight", "Speaker", "Display Panel");
     }
 }

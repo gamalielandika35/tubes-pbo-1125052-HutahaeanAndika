@@ -1,8 +1,6 @@
 package tugasbesarpbo.model;
-import java.util.Arrays;
-import java.util.List;
 
-public class DesktopPC extends PersonalDevice implements Diagnosable, Repairable {
+public class DesktopPC extends PersonalDevice {
     private String storageType;
     private String motherboardFormFactor;
     private int powerSupplyWattage;
@@ -48,14 +46,5 @@ public class DesktopPC extends PersonalDevice implements Diagnosable, Repairable
     @Override 
     public String getDeviceType(){
         return "DESKTOP_PC";
-    }
-    @Override
-    public List<String> getDiagnosticChecklist() {
-        return Arrays.asList("Power Supply", "Proses POST dan booting", "Deteksi storage", "RAM", "Motherboard", "Sistem pendingin");
-    }
-
-    @Override
-    public List<String> getCommonRepairComponents() {
-        return Arrays.asList("Power Supply", "Storage Drive", "RAM", "Motherboard", "Cooling Fan", "Power Switch");
     }
 }

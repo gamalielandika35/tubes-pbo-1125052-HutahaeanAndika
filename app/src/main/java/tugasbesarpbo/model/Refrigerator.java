@@ -1,8 +1,6 @@
 package tugasbesarpbo.model;
-import java.util.Arrays;
-import java.util.List;
 
-public class Refrigerator extends HouseholdDevice implements Diagnosable, Repairable  {
+public class Refrigerator extends HouseholdDevice {
     private String doorConfiguration;
     private String defrostType;
     private String compressorType;
@@ -41,14 +39,5 @@ public class Refrigerator extends HouseholdDevice implements Diagnosable, Repair
     @Override 
     public String getDeviceType(){
         return "REFRIGERATOR";
-    }
-    @Override
-    public List<String> getDiagnosticChecklist() {
-        return Arrays.asList("Cooling Performance", "Compressor", "Fan", "Door Seal", "Defrost System", "Temperature Sensor");
-    }
-
-    @Override
-    public List<String> getCommonRepairComponents() {
-        return Arrays.asList("Compressor", "Start Relay", "Temperature Sensor", "Fan Motor", "Door Gasket", "Defrost Heater");
     }
 }

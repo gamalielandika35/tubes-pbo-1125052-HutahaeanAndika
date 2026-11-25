@@ -1,9 +1,6 @@
 package tugasbesarpbo.model;
 
-import java.util.Arrays;
-import java.util.List;
-
-public class Smartphone extends PersonalDevice implements Diagnosable, Repairable {
+public class Smartphone extends PersonalDevice{
     private String chargingPortType;
     private String screenTechnology;
 
@@ -33,15 +30,6 @@ public class Smartphone extends PersonalDevice implements Diagnosable, Repairabl
     @Override 
     public String getDeviceType(){
         return "SMARTPHONE";
-    }
-        @Override
-    public List<String> getDiagnosticChecklist() {
-        return Arrays.asList("Kondisi baterai", "Charging Port", "Layar dan touchscreen", "Speaker dan microphone", "Kamera");
-    }
-
-    @Override
-    public List<String> getCommonRepairComponents() {
-        return Arrays.asList("Battery", "Display Assembly", "Charging Port", "Speaker", "Microphone", "Camera Module");
     }
     
 }

@@ -1,8 +1,6 @@
 package tugasbesarpbo.model;
-import java.util.Arrays;
-import java.util.List;
 
-public class Laptop extends PersonalDevice implements Diagnosable, Repairable {
+public class Laptop extends PersonalDevice{
     private String storageType;
     private String batteryModel;
     private int chargerWattage;
@@ -41,15 +39,6 @@ public class Laptop extends PersonalDevice implements Diagnosable, Repairable {
     @Override 
     public String getDeviceType(){
         return "LAPTOP";
-    }
-    @Override
-    public List<String> getDiagnosticChecklist() {
-        return Arrays.asList("Power dan charging", "Kondisi layar", "Deteksi storage", "Keyboard dan touchpad", "Sistem pendingin");
-    }
-
-    @Override
-    public List<String> getCommonRepairComponents() {
-        return Arrays.asList("Battery", "Charging Port", "Storage Drive", "Keyboard", "Display Panel", "Cooling Fan");
     }
 
 
