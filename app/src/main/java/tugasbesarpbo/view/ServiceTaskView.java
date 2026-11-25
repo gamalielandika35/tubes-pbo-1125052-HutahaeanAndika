@@ -90,7 +90,7 @@ public class ServiceTaskView extends JPanel {
         JPanel buttonPanel = new JPanel(
                 new FlowLayout(FlowLayout.LEFT));
 
-        buttonPanel.add(executeButton);
+        buttonPanel.add(executeButton); 
         buttonPanel.add(completeButton);
         buttonPanel.add(clearButton);
 

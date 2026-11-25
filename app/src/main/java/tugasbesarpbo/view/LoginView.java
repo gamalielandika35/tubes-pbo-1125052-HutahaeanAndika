@@ -1,4 +1,3 @@
-
 package tugasbesarpbo.view;
 
 import javax.swing.*;
@@ -15,7 +14,7 @@ public class LoginView extends JFrame {
     public LoginView() {
 
         setTitle("ElectroCare - Login");
-        setSize(450, 430);
+        setSize(450, 480);                             
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -26,15 +25,14 @@ public class LoginView extends JFrame {
         JPanel mainPanel = new JPanel(new GridBagLayout());
         mainPanel.setBackground(UIStyle.BACKGROUND);
 
-        JPanel loginPanel = new JPanel();
-        loginPanel.setLayout(new GridLayout(0, 1, 8, 8));
+        JPanel loginPanel = new JPanel(new BorderLayout());  
         loginPanel.setBackground(UIStyle.WHITE);
         loginPanel.setBorder(
                 BorderFactory.createCompoundBorder(
                         BorderFactory.createLineBorder(
                                 UIStyle.BORDER, 1),
                         BorderFactory.createEmptyBorder(
-                                30, 35, 30, 35)
+                                30, 35, 20, 35)
                 )
         );
 
@@ -68,24 +66,29 @@ public class LoginView extends JFrame {
         loginButton = new JButton("Login");
         UIStyle.stylePrimaryButton(loginButton);
 
-        statusLabel = new JLabel("", SwingConstants.CENTER);
+        statusLabel = new JLabel(" ", SwingConstants.CENTER);  
         statusLabel.setFont(UIStyle.getNormalFont());
         statusLabel.setForeground(UIStyle.RED);
+        statusLabel.setPreferredSize(new Dimension(300, 34));   
 
-        loginPanel.add(titleLabel);
-        loginPanel.add(subtitleLabel);
-        loginPanel.add(new JLabel(""));
-        loginPanel.add(usernameLabel);
-        loginPanel.add(usernameField);
-        loginPanel.add(passwordLabel);
-        loginPanel.add(passwordField);
-        loginPanel.add(new JLabel(""));
-        loginPanel.add(loginButton);
-        loginPanel.add(statusLabel);
+        JPanel form = new JPanel(new GridLayout(0, 1, 8, 8));   
+        form.setOpaque(false);
+        form.add(titleLabel);
+        form.add(subtitleLabel);
+        form.add(usernameLabel);
+        form.add(usernameField);
+        form.add(passwordLabel);
+        form.add(passwordField);
+        form.add(loginButton);
+
+        loginPanel.add(form, BorderLayout.CENTER);             
+        loginPanel.add(statusLabel, BorderLayout.SOUTH);       
 
         mainPanel.add(loginPanel);
 
         add(mainPanel, BorderLayout.CENTER);
+
+        getRootPane().setDefaultButton(loginButton);            
 
         setVisible(true);
     }
