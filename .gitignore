@@ -7,5 +7,12 @@ build
 # Ignore Kotlin plugin data
 .kotlin
 
-# Ignore local database configuration
+# Ignore local database configurations
 app/src/main/java/tugasbesarpbo/config/databaseConfig.java
+app/src/main/java/tugasbesarpbo/view/LoginView.java
+app/src/main/java/tugasbesarpbo/util
+app/src/main/java/tugasbesarpbo/Database
+app/src/main/java/tugasbesarpbo/App.java
+
+
+
