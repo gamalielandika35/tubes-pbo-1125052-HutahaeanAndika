@@ -8,6 +8,7 @@ import tugasbesarpbo.model.Laptop;
 import tugasbesarpbo.model.Smartphone;
 import tugasbesarpbo.model.DesktopPC;
 import tugasbesarpbo.model.WashingMachine;
+import tugasbesarpbo.util.UIStyle;
 import tugasbesarpbo.model.Television;
 import tugasbesarpbo.model.Refrigerator;
 
@@ -518,11 +519,9 @@ public class DeviceView extends JPanel {
             ElectronicDevice device = controller.getDeviceById(id);
 
             if (device == null) {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Device tidak ditemukan.");
-                return;
-            }
+    showMessage("Device tidak ditemukan.", true);
+    return;
+}
 
             txtId.setText(String.valueOf(device.getDeviceId()));
             txtCustomerId.setText(String.valueOf(device.getCustomerId()));
@@ -537,13 +536,8 @@ public class DeviceView extends JPanel {
             fillDeviceFields(device);
 
         } catch (Exception e) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    e.getMessage(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-        }
+    showMessage(e.getMessage(), true);
+}
     }
 
     private void fillDeviceFields(ElectronicDevice device) {
@@ -726,6 +720,10 @@ public class DeviceView extends JPanel {
                     label + " harus berupa angka.");
         }
     }
+    private void showMessage(String message, boolean isError) {
+    statusLabel.setForeground(isError ? UIStyle.RED : UIStyle.GREEN);
+    statusLabel.setText(message != null ? message : "Terjadi kesalahan.");
+}
 
     public static void main(String[] args) {
 
