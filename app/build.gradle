@@ -44,11 +44,3 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-tasks.register('generatePasswordHash', JavaExec) {
-    group = 'application'
-    description = 'Generate BCrypt password hashes'
-
-    classpath = sourceSets.main.runtimeClasspath
-    mainClass = 'tugasbesarpbo.util.PasswordHashGenerator'
-}
-

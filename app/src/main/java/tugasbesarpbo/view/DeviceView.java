@@ -724,11 +724,4 @@ public class DeviceView extends JPanel {
     statusLabel.setForeground(isError ? UIStyle.RED : UIStyle.GREEN);
     statusLabel.setText(message != null ? message : "Terjadi kesalahan.");
 }
-
-    public static void main(String[] args) {
-
-        SwingUtilities.invokeLater(() -> {
-            new DeviceView().setVisible(true);
-        });
-    }
 }
