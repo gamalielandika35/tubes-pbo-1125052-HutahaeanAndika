@@ -1,7 +1,7 @@
 package tugasbesarpbo.service;
 
 import tugasbesarpbo.model.Customer;
-import tugasbesarpbo.respository.CustomerRepository;
+import tugasbesarpbo.repository.CustomerRepository;
 import java.util.List;
 
 public class CustomerService {

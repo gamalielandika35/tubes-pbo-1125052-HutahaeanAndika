@@ -1,4 +1,4 @@
-package tugasbesarpbo.respository;
+package tugasbesarpbo.repository;
 
 import tugasbesarpbo.model.Customer;
 import tugasbesarpbo.Database.databaseConnection;

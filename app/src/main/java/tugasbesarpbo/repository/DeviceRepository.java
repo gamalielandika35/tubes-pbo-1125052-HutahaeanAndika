@@ -1,4 +1,5 @@
-package tugasbesarpbo.respository;
+
+package tugasbesarpbo.repository;
 
 import tugasbesarpbo.Database.databaseConnection;
 import tugasbesarpbo.model.DeviceFactory;
@@ -18,21 +19,15 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeviceRepository {
-    private final Connection connection;
+public class DeviceRepository implements GenericRepository<ElectronicDevice> {
 
-    public DeviceRepository() {
-        try {
-            connection = databaseConnection.getConnection();
-        } catch (SQLException e) {
-            throw new RuntimeException("Gagal terhubung ke database: " + e.getMessage());
-        }
-    }
-
+    @Override
     public void save(ElectronicDevice device) throws SQLException {
         String sql = "INSERT INTO devices (customer_id, device_type, brand, model, serial_number, notes, processor, operating_system, ram_gb, storage_gb, power_rating_watts, rated_voltage, storage_type, battery_model, charger_wattage, charging_port_type, screen_technology, motherboard_form_factor, power_supply_wattage, loading_type, drive_type, screen_size_inches, display_technology, door_configuration, defrost_type, compressor_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (Connection connection = databaseConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
             ps.setLong(1, device.getCustomerId());
             ps.setString(2, device.getDeviceType());
             ps.setString(3, device.getBrand());
@@ -45,10 +40,13 @@ public class DeviceRepository {
         }
     }
 
+    @Override
     public ElectronicDevice findById(long id) throws SQLException {
         String sql = "SELECT * FROM devices WHERE device_id = ?";
 
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (Connection connection = databaseConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
             ps.setLong(1, id);
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -61,12 +59,14 @@ public class DeviceRepository {
         return null;
     }
 
+    @Override
     public List<ElectronicDevice> findAll() throws SQLException {
-        List<ElectronicDevice> devices = new ArrayList<>();
+        List<ElectronicDevice> devices = new ArrayList<ElectronicDevice>();
 
         String sql = "SELECT * FROM devices ORDER BY device_id";
 
-        try (PreparedStatement ps = connection.prepareStatement(sql);
+        try (Connection connection = databaseConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
@@ -81,10 +81,13 @@ public class DeviceRepository {
         return devices;
     }
 
+    @Override
     public void update(ElectronicDevice device) throws SQLException {
         String sql = "UPDATE devices SET customer_id = ?, device_type = ?, brand = ?, model = ?, serial_number = ?, notes = ?, processor = ?, operating_system = ?, ram_gb = ?, storage_gb = ?, power_rating_watts = ?, rated_voltage = ?, storage_type = ?, battery_model = ?, charger_wattage = ?, charging_port_type = ?, screen_technology = ?, motherboard_form_factor = ?, power_supply_wattage = ?, loading_type = ?, drive_type = ?, screen_size_inches = ?, display_technology = ?, door_configuration = ?, defrost_type = ?, compressor_type = ? WHERE device_id = ?";
 
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (Connection connection = databaseConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
             ps.setLong(1, device.getCustomerId());
             ps.setString(2, device.getDeviceType());
             ps.setString(3, device.getBrand());
@@ -99,16 +102,22 @@ public class DeviceRepository {
         }
     }
 
+    @Override
     public void delete(long id) throws SQLException {
         String sql = "DELETE FROM devices WHERE device_id = ?";
 
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (Connection connection = databaseConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
             ps.setLong(1, id);
             ps.executeUpdate();
         }
     }
 
-    private void setDeviceSpecificValues(PreparedStatement ps, ElectronicDevice device) throws SQLException {
+    private void setDeviceSpecificValues(
+            PreparedStatement ps,
+            ElectronicDevice device) throws SQLException {
+
         switch (device.getDeviceType()) {
             case "LAPTOP":
                 Laptop laptop = (Laptop) device;
@@ -262,7 +271,9 @@ public class DeviceRepository {
         }
     }
 
-    private ElectronicDevice mapResultSetToDevice(ResultSet rs) throws SQLException {
+    private ElectronicDevice mapResultSetToDevice(ResultSet rs)
+            throws SQLException {
+
         switch (rs.getString("device_type")) {
             case "LAPTOP":
                 return mapLaptop(rs);

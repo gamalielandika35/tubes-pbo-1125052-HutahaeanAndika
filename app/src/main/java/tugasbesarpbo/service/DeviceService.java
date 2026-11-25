@@ -2,7 +2,7 @@
 package tugasbesarpbo.service;
 
 import tugasbesarpbo.model.ElectronicDevice;
-import tugasbesarpbo.respository.DeviceRepository;
+import tugasbesarpbo.repository.DeviceRepository;
 
 import java.util.List;
 
