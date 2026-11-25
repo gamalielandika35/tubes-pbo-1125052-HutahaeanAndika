@@ -13,10 +13,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import tugasbesarpbo.view.PaymentView;
 import tugasbesarpbo.view.ServiceTaskView;
+import tugasbesarpbo.model.DashboardStatistics;
+import tugasbesarpbo.service.DashboardService;
+import java.sql.SQLException;
 
 public class DashboardController {
 
     private DashboardView dashboardView;
+    private DashboardService dashboardService;
 
     public DashboardController(DashboardView dashboardView) {
         this.dashboardView = dashboardView;
@@ -31,6 +35,7 @@ public class DashboardController {
 
     public void loadDashboard() {
         User currentUser = SessionManager.getInstance().getCurrentUser();
+        dashboardService = new DashboardService();
 
         if (currentUser == null) {
             return;
@@ -45,9 +50,27 @@ public class DashboardController {
         } else if (role == Role.TECHNICIAN) {
             loadTechnicianMenu();
         }
+        dashboardView.showPage("Dashboard");
+        loadDashboardStatistics();
 
         dashboardView.revalidate();
         dashboardView.repaint();
+    }
+
+    private void loadDashboardStatistics() {
+
+        try {
+            DashboardStatistics statistics = dashboardService.getStatistics();
+
+            dashboardView.setDashboardStatistics(
+                    statistics.getTotalServiceOrders(),
+                    statistics.getCompletedOrders(),
+                    statistics.getInProgress(),
+                    statistics.getTotalCustomers());
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadAdminMenu() {
@@ -56,7 +79,6 @@ public class DashboardController {
         addMenu("Customer");
         addMenu("Device");
         addMenu("Service Order");
-        addMenu("Reports");
         addMenu("Service Task");
     }
 
@@ -77,33 +99,46 @@ public class DashboardController {
     }
 
     private void addMenu(String menuName) {
+
         dashboardView.addMenuButton(menuName);
 
-        if (menuName.equals("User Management")) {
+        if (menuName.equals("Dashboard")) {
+
+            // bagian ini ada di dashboard view
+
+        } else if (menuName.equals("User Management")) {
+
             UserManagementView userManagementView = new UserManagementView();
 
             new UserManagementController(userManagementView);
             dashboardView.addPage(menuName, userManagementView);
 
         } else if (menuName.equals("Service Order")) {
+
             ServiceOrderView serviceOrderView = new ServiceOrderView();
 
             new ServiceOrderController(serviceOrderView);
             dashboardView.addPage(menuName, serviceOrderView);
 
         } else if (menuName.equals("Payment")) {
+
             PaymentView paymentView = new PaymentView();
 
             new PaymentController(paymentView);
             dashboardView.addPage(menuName, paymentView);
+
         } else if (menuName.equals("Service Task")) {
+
             ServiceTaskView serviceTaskView = new ServiceTaskView();
 
             new ServiceTaskController(serviceTaskView);
             dashboardView.addPage(menuName, serviceTaskView);
-        }else {
+
+        } else {
+
             JPanel page = new JPanel();
             page.add(new JLabel(menuName + " Page"));
+
             dashboardView.addPage(menuName, page);
         }
 
@@ -112,6 +147,7 @@ public class DashboardController {
                         dashboardView.getMenuPanel().getComponentCount() - 1);
 
         button.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 dashboardView.showPage(menuName);
             }
