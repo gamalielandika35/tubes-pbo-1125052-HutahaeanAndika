@@ -1,4 +1,3 @@
-
 package tugasbesarpbo.service;
 
 import tugasbesarpbo.model.ServicePart;
@@ -17,12 +16,38 @@ public class ServicePartService {
 
     public void addServicePart(ServicePart servicePart)
             throws SQLException {
+
+        if (servicePart.getComponentName() == null
+                || servicePart.getComponentName().trim().isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Nama komponen tidak boleh kosong."
+            );
+        }
+
+        if (servicePart.getQuantity() <= 0) {
+            throw new IllegalArgumentException(
+                    "Jumlah komponen harus lebih dari 0."
+            );
+        }
+
+        if (servicePart.getUnitPrice() == null
+                || servicePart.getUnitPrice().signum() < 0) {
+            throw new IllegalArgumentException(
+                    "Biaya komponen tidak valid."
+            );
+        }
+
         servicePartRepository.save(servicePart);
     }
 
     public List<ServicePart> getAllServiceParts()
             throws SQLException {
         return servicePartRepository.findAll();
+    }
+
+    public List<ServicePart> getServicePartsByServiceId(long serviceId)
+            throws SQLException {
+        return servicePartRepository.findByServiceId(serviceId);
     }
 
     public ServicePart getServicePartById(long id)

@@ -82,6 +82,7 @@ public class DashboardController {
         addMenu("Device");
         addMenu("Service Order");
         addMenu("Service Task");
+        addMenu("Payment");
     }
 
     private void loadCashierMenu() {
@@ -90,7 +91,6 @@ public class DashboardController {
         addMenu("Device");
         addMenu("Service Order");
         addMenu("Payment");
-        addMenu("Invoice");
     }
 
     private void loadTechnicianMenu() {

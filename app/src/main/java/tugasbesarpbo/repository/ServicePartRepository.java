@@ -1,4 +1,3 @@
-
 package tugasbesarpbo.repository;
 
 import tugasbesarpbo.Database.databaseConnection;
@@ -17,16 +16,17 @@ public class ServicePartRepository
     @Override
     public void save(ServicePart servicePart) throws SQLException {
         String sql = "INSERT INTO service_parts "
-                + "(service_id, part_id, quantity, unit_price) "
-                + "VALUES (?, ?, ?, ?)";
+                + "(service_id, component_name, action, quantity, unit_price) "
+                + "VALUES (?, ?, ?, ?, ?)";
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setLong(1, servicePart.getServiceId());
-            statement.setLong(2, servicePart.getPartId());
-            statement.setInt(3, servicePart.getQuantity());
-            statement.setBigDecimal(4, servicePart.getUnitPrice());
+            statement.setString(2, servicePart.getComponentName());
+            statement.setString(3, servicePart.getAction());
+            statement.setInt(4, servicePart.getQuantity());
+            statement.setBigDecimal(5, servicePart.getUnitPrice());
 
             statement.executeUpdate();
         }
@@ -34,7 +34,7 @@ public class ServicePartRepository
 
     @Override
     public ServicePart findById(long id) throws SQLException {
-        String sql = "SELECT * FROM service_parts WHERE service_id = ?";
+        String sql = "SELECT * FROM service_parts WHERE service_part_id = ?";
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -43,7 +43,7 @@ public class ServicePartRepository
 
             try (ResultSet result = statement.executeQuery()) {
                 if (result.next()) {
-                    return getServicePartFromResult(result);
+                    return mapResult(result);
                 }
             }
         }
@@ -51,19 +51,42 @@ public class ServicePartRepository
         return null;
     }
 
-    @Override
-    public List<ServicePart> findAll() throws SQLException {
-        List<ServicePart> serviceParts = new ArrayList<ServicePart>();
+    public List<ServicePart> findByServiceId(long serviceId)
+            throws SQLException {
+
+        List<ServicePart> serviceParts = new ArrayList<>();
 
         String sql = "SELECT * FROM service_parts "
-                + "ORDER BY service_id, part_id";
+                + "WHERE service_id = ? ORDER BY service_part_id";
+
+        try (Connection connection = databaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setLong(1, serviceId);
+
+            try (ResultSet result = statement.executeQuery()) {
+                while (result.next()) {
+                    serviceParts.add(mapResult(result));
+                }
+            }
+        }
+
+        return serviceParts;
+    }
+
+    @Override
+    public List<ServicePart> findAll() throws SQLException {
+        List<ServicePart> serviceParts = new ArrayList<>();
+
+        String sql = "SELECT * FROM service_parts "
+                + "ORDER BY service_id, service_part_id";
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet result = statement.executeQuery()) {
 
             while (result.next()) {
-                serviceParts.add(getServicePartFromResult(result));
+                serviceParts.add(mapResult(result));
             }
         }
 
@@ -73,16 +96,19 @@ public class ServicePartRepository
     @Override
     public void update(ServicePart servicePart) throws SQLException {
         String sql = "UPDATE service_parts SET "
+                + "service_id = ?, component_name = ?, action = ?, "
                 + "quantity = ?, unit_price = ? "
-                + "WHERE service_id = ? AND part_id = ?";
+                + "WHERE service_part_id = ?";
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setInt(1, servicePart.getQuantity());
-            statement.setBigDecimal(2, servicePart.getUnitPrice());
-            statement.setLong(3, servicePart.getServiceId());
-            statement.setLong(4, servicePart.getPartId());
+            statement.setLong(1, servicePart.getServiceId());
+            statement.setString(2, servicePart.getComponentName());
+            statement.setString(3, servicePart.getAction());
+            statement.setInt(4, servicePart.getQuantity());
+            statement.setBigDecimal(5, servicePart.getUnitPrice());
+            statement.setLong(6, servicePart.getServicePartId());
 
             statement.executeUpdate();
         }
@@ -90,7 +116,7 @@ public class ServicePartRepository
 
     @Override
     public void delete(long id) throws SQLException {
-        String sql = "DELETE FROM service_parts WHERE service_id = ?";
+        String sql = "DELETE FROM service_parts WHERE service_part_id = ?";
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -100,12 +126,14 @@ public class ServicePartRepository
         }
     }
 
-    private ServicePart getServicePartFromResult(ResultSet result)
+    private ServicePart mapResult(ResultSet result)
             throws SQLException {
 
         return new ServicePart(
+                result.getLong("service_part_id"),
                 result.getLong("service_id"),
-                result.getLong("part_id"),
+                result.getString("component_name"),
+                result.getString("action"),
                 result.getInt("quantity"),
                 result.getBigDecimal("unit_price")
         );

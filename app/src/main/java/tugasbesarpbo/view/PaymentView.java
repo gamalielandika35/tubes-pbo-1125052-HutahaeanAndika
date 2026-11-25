@@ -35,7 +35,7 @@ public class PaymentView extends JPanel {
 
         String[] columns = {
             "Payment ID", "Service ID", "Received By",
-            "Amount", "Payment Method", "Payment Status",
+            "Total Price", "Payment Method", "Payment Status",
             "Paid At", "Reference No"
         };
 
@@ -70,7 +70,7 @@ public class PaymentView extends JPanel {
 
         addFormRow(formPanel, 0, "Service ID", serviceIdField);
         addFormRow(formPanel, 1, "Received By", receivedByField);
-        addFormRow(formPanel, 2, "Amount", amountField);
+        addFormRow(formPanel, 2, "Total Price", amountField);
         addFormRow(formPanel, 3, "Payment Method", paymentMethodComboBox);
         addFormRow(formPanel, 4, "Payment Status", paymentStatusComboBox);
         addFormRow(formPanel, 5, "Reference No", referenceNoField);

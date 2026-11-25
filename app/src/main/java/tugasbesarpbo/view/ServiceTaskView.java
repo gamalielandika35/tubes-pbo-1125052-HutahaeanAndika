@@ -34,7 +34,7 @@ public class ServiceTaskView extends JPanel {
 
         String[] columns = {
             "Detail ID", "Service ID", "Diagnosis",
-            "Repair Action", "Labor Cost",
+            "Repair Action", "Estimated Cost",
             "Technician Notes", "Updated At"
         };
 
@@ -77,7 +77,7 @@ public class ServiceTaskView extends JPanel {
                 new JScrollPane(diagnosisArea));
         addFormRow(formPanel, 4, "Repair Action",
                 new JScrollPane(repairActionArea));
-        addFormRow(formPanel, 5, "Labor Cost", laborCostField);
+        addFormRow(formPanel, 5, "Estimated Cost", laborCostField);
         addFormRow(formPanel, 6, "Technician Notes",
                 new JScrollPane(technicianNotesArea));
 

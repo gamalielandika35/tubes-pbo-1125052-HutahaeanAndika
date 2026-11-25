@@ -3,16 +3,36 @@ package tugasbesarpbo.model;
 import java.math.BigDecimal;
 
 public class ServicePart {
+
+    private Long servicePartId;
     private Long serviceId;
-    private Long partId;
+    private String componentName;
+    private String action;
     private int quantity;
     private BigDecimal unitPrice;
 
-    public ServicePart(Long serviceId, Long partId, int quantity, BigDecimal unitPrice) {
+    public ServicePart(
+            Long servicePartId,
+            Long serviceId,
+            String componentName,
+            String action,
+            int quantity,
+            BigDecimal unitPrice) {
+
+        this.servicePartId = servicePartId;
         this.serviceId = serviceId;
-        this.partId = partId;
+        this.componentName = componentName;
+        this.action = action;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
+    }
+
+    public Long getServicePartId() {
+        return servicePartId;
+    }
+
+    public void setServicePartId(Long servicePartId) {
+        this.servicePartId = servicePartId;
     }
 
     public Long getServiceId() {
@@ -23,12 +43,20 @@ public class ServicePart {
         this.serviceId = serviceId;
     }
 
-    public Long getPartId() {
-        return partId;
+    public String getComponentName() {
+        return componentName;
     }
 
-    public void setPartId(Long partId) {
-        this.partId = partId;
+    public void setComponentName(String componentName) {
+        this.componentName = componentName;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
     }
 
     public int getQuantity() {
@@ -46,5 +74,8 @@ public class ServicePart {
     public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
     }
-    
+
+    public BigDecimal getSubtotal() {
+        return unitPrice.multiply(BigDecimal.valueOf(quantity));
+    }
 }

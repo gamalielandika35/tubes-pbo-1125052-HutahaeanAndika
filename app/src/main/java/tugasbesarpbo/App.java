@@ -20,8 +20,7 @@ public class App {
                 @Override
                 public void run() {
                     LoginView view = new LoginView();
-                    new LoginController(view);
-                }
+                    new LoginController(view);                }
             });
 
         } catch (SQLException e) {

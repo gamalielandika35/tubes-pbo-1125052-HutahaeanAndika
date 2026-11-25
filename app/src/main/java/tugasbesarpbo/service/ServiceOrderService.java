@@ -75,6 +75,20 @@ public class ServiceOrderService {
         serviceOrderRepository.update(serviceOrder);
     }
 
+    public void completeServiceOrder(long serviceId)
+        throws SQLException, InvalidServiceOrderException,
+        ServiceOrderNotFoundException {
+
+    ServiceOrder serviceOrder = getServiceOrderById(serviceId);
+
+    if (!serviceOrder.getStatus().equals("COMPLETE")) {
+        serviceOrder.setStatus("COMPLETE");
+        serviceOrder.setCompletedAt(java.time.LocalDateTime.now());
+
+        serviceOrderRepository.update(serviceOrder);
+    }
+}
+
     public void deleteServiceOrder(long id)
             throws SQLException, InvalidServiceOrderException,
             ServiceOrderNotFoundException {
